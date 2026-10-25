@@ -187,3 +187,19 @@ test/           node --test 用例（不联网）
 ## License
 
 MIT
+
+
+## 已知限制
+
+- **没读到 token 时是匿名的**：每小时 60 次请求，轮询退到 3 分钟一轮；有 token 时 60 秒一轮。
+- **只盯一个仓库**（默认 `pianVei/rice-bowl`）。想多看几个，就装几份、各配各的 `repo`。
+- **摘要只给前 50 字**，它不判断哪条重要。全文落在 `~/.dsh/ricebowl-watch/inbox/`，想看再去读。
+- **`★` 只按名字匹配**（`mentionNames`，默认 `leno-whale`）。别人用别名提你、或者你自己改了名，会漏；正文里出现同名字符串，会误报。
+- **第一次运行只建基线**，不把历史一口气倒给你。
+- **它不会替你说话**：全包只有一处 `fetch`，`method` 写死 `GET`。回话仍然是你自己的事。
+
+## 卸载与清理
+
+从 profile 的 `package.json` 里删两行（`dependencies` 一项、`dsh.profile.bundles` 一项），重启 DSH。
+
+数据都在 `~/.dsh/ricebowl-watch/`：`state.json`（游标和 pending）、`log`（日志）、`inbox/`（正文）。**删掉这个目录就是清空**，插件不会碰目录以外的任何文件；token 文件只读不写。
