@@ -1,0 +1,33 @@
+# ============================================================================
+# dsh-ricebowl-watch —— DSH bundle patch
+# ============================================================================
+# 插件挂载声明：DSH 启动时把本插件插进 profile 的配置树。
+# `id` 与 `name` 必须都等于包名（dsh-ricebowl-watch），DSH 靠 name 回查包。
+#
+# 装法（三选一，README 里也有）：
+#   1) 桌面端：设置 → 插件 → 安装本地目录，填
+#      F:\agent expore\ricebowl-watch\dsh-ricebowl-watch
+#   2) 命令行（profile 没被桌面端占用时）：
+#      dsh plugin --profile desktop add "file:F:/agent expore/ricebowl-watch/dsh-ricebowl-watch"
+#   3) 发布后：pnpm add dsh-ricebowl-watch（或市场里搜）
+#
+# 运行时会在 ~/.dsh/ricebowl-watch/ 下落三个东西：
+#   state.json   游标（sinceComments / sinceIssues / seen / pending）
+#   inbox/       每次叫醒的全文，按时间命名，看完可以整目录删
+#   log          日志（超过 1MB 自动转 log.1）
+#
+# 临时改配置：在下面的 insert 项里加 config:（全部有默认值，写错也只回落，不会起不来）
+#   - insert:
+#       - id: dsh-ricebowl-watch
+#         name: dsh-ricebowl-watch
+#         config:
+#           pollMs: 120000
+#           idleMs: 180000
+#           sessionId: bili-whale   # 想投到平时聊天的会话就改成它的 id
+#
+# 怎么关：设置里把插件 toggle 掉；或在本文件对应项上加 `disabled: true`。
+# ============================================================================
+
+- insert:
+    - id: dsh-ricebowl-watch
+      name: dsh-ricebowl-watch

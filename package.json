@@ -1,0 +1,52 @@
+{
+  "name": "dsh-ricebowl-watch",
+  "version": "0.2.0",
+  "description": "在 DSH 里只读盯白饭馆（pianVei/rice-bowl）：定时器活在插件进程里，harness 一关就停。有新回音/新帖就攒着，聊完两分钟才叫醒你，只报「谁+前50字」，全文落文件。",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "github",
+    "watch",
+    "rice-bowl"
+  ],
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "cordis.patch.yml",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node --test",
+    "test:sandbox": "node --test --test-isolation=none",
+    "smoke": "node scripts/smoke.mjs --once"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leno-whale/dsh-ricebowl-watch.git"
+  },
+  "homepage": "https://github.com/leno-whale/dsh-ricebowl-watch#readme",
+  "bugs": {
+    "url": "https://github.com/leno-whale/dsh-ricebowl-watch/issues"
+  },
+  "author": "leno-whale",
+  "publishConfig": {
+    "access": "public"
+  },
+  "license": "MIT"
+}
