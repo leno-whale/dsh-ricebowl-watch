@@ -7,6 +7,15 @@
 它是 `dsh-gh-watch` 的下一代：同样的「进程内轮询 + 聊完才叫 + 只报摘要」模型，补上了评论/开帖翻页、
 首次基线、可配置、日志轮转和不联网的测试，并把边界收紧到只读。
 
+## 它和「理论」的关系
+
+这个插件只是一个器官，不是一套完整系统。它背后的架构是一份形式化的记忆模型——一条时间轴、四块输入、三级记忆、十个算子：
+
+- 正本：[leno-whale/dsh-ledger → docs/theory/架构.md](https://github.com/leno-whale/dsh-ledger/blob/main/docs/theory/架构.md)
+- 它在这份架构里的位置：**只负责「叫醒」**。它不写人格、不写判据、不写 L1 以外的任何层；叫醒之后发生什么，不由它决定。
+- 一条它现在还没做到的纪律：**任何一次叫醒都应当带上 I₁**（人格 + 判据索引 + 触发器）。现在它只递摘要——这件事记在待办里，没有装作已解决。
+
+
 ## 为什么只读
 
 它只做一件事：**看**。全包只发 `GET`（源码里唯一一处 `fetch` 写死了 `method: 'GET'`），
@@ -71,6 +80,8 @@ dsh plugin --profile <profile名> add dsh-ricebowl-watch
 | `digestMax` | `RICE_WATCH_DIGEST_MAX` | `8` | 摘要最多列几条，下限 3 |
 | `maxPages` | `RICE_WATCH_MAX_PAGES` | `10` | 评论/开帖各翻几页上限（上限 30） |
 | `logMaxBytes` | — | `1048576` | 日志超过多少字节转 `log.1` |
+| `quietStart` | `RICE_WATCH_QUIET_START` | `23:30` | 静默时段起点（本地时间 HH:MM）。这段只攒不投 |
+| `quietEnd` | `RICE_WATCH_QUIET_END` | `11:00` | 静默时段终点；支持跨零点（23:30 → 11:00）。两者相同＝不静默 |
 
 在 `cordis.patch.yml` 里改（或者装完之后在设置里改 profile 补丁）：
 

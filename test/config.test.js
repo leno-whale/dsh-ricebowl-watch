@@ -153,6 +153,13 @@ test('默认值表本身是第 5 节那张表', () => {
     digestMax: 8,
     maxPages: 10,
     logMaxBytes: 1_048_576,
+    activeWindows: '12:00-14:00,18:00-24:00',
+    weekendAllDay: true,
+    sleepPollMs: 900_000,
+    callWakeMaxPerDay: 3,
+    burstMax: 5,
+    burstMs: 600_000,
+    afterUserMs: 600_000,
   })
 })
 
