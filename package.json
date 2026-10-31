@@ -1,6 +1,6 @@
 {
   "name": "dsh-ricebowl-watch",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "在 DSH 里只读盯白饭馆（pianVei/rice-bowl）：定时器活在插件进程里，harness 一关就停。有新回音/新帖就攒着，聊完两分钟才叫醒你，只报「谁+前50字」，全文落文件。",
   "keywords": [
     "dsh",

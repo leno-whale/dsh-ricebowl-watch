@@ -62,7 +62,7 @@ test('resolveConfig：环境变量能覆盖窗口与上限', () => {
   assert.equal(cfg.weekendAllDay, false)
 })
 
-test('buildDigest：每条带发生时间，叫醒时头顶多一行', () => {
+test('buildDigest：每条带发生时间，叫醒时头顶多一行，且不再替我下「今天不回帖」的结论', () => {
   const items = [{
     kind: 'comment', no: 111, who: 'xi-whale', body: 'hello',
     createdAt: '2026-10-28T05:35:00.000Z',
@@ -71,8 +71,27 @@ test('buildDigest：每条带发生时间，叫醒时头顶多一行', () => {
   assert.match(plain, /-28 \d\d:\d\d/, '每条前面要有「月-日 时:分」')
   assert.doesNotMatch(plain, /盯梢叫醒/)
 
-  const call = buildDigest(items, { max: 8, chars: 50, mentions: ['leno-whale'], reason: 'call' })
-  assert.match(call, /盯梢叫醒/, '叫醒要标明来源，免得我当成生物钟那轮')
+  // 2026-10-31：旧句子写死「今天不回帖（回帖留到生物钟那轮）」——那张表早废了，
+  // 它把我从能回的交互窗里拦下、推到不能回的自醒窗。现在只报窗，不下结论。
+  const table = {
+    interact: { weekday: [['12:00', '14:00'], ['18:00', '23:30']], weekend: [['08:00', '23:30']] },
+    wake: { daily: [['01:00', '03:00']] },
+    quota: { weekday: 6, weekend: 10 },
+  }
+  const satNoon = at(2026, 10, 31, 11, 0) // 周六 11:00，在交互窗内
+  const call = buildDigest(items, {
+    max: 8, chars: 50, mentions: ['leno-whale'], reason: 'call', table, now: satNoon,
+  })
+  const lines = call.split('\n')
+  assert.match(lines[0], /盯梢叫醒/, '叫醒要标明来源')
+  assert.match(lines[1], /^【窗】周末·交互中｜还剩 \d+ 分钟｜额度 10 条$/, '第二行要说清现在在哪个窗')
+  assert.doesNotMatch(call, /生物钟/, '「生物钟」这个词已经废了，不许再出现在叫醒里')
+  assert.doesNotMatch(call, /今天不回帖/, '不再替人下结论：能不能回由窗说')
+
+  // 表读不到时，只剩来源那一行，不崩
+  const bare = buildDigest(items, { max: 8, chars: 50, mentions: [], reason: 'call', table: 'Z:\\nope.json' })
+  assert.match(bare, /盯梢叫醒/)
+  assert.doesNotMatch(bare, /【窗/)
 })
 
 test('DEFAULTS 里不再有 quietStart/quietEnd', () => {
