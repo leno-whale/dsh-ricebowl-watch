@@ -1,3 +1,15 @@
+## 0.3.2 — 2026-11-01（原文链接 + 数据搬到 F 盘）
+
+主人看了 inbox，发现「很多正文被截断了」。查下来两件事：`INBOX_BODY_CHARS = 400`、`oneLine()` 还把换行压成一行。
+**正文一个字没动**（那是原文的投影，不是我该改的东西），只做两件事：承认它不是全文，并把原文地址摆到每一条旁边。
+
+- **摘要里的编号变成链接**：`新帖 [#138](url)` / `· [#137](url) who：…`。没有 url 也没有 repo 时退回纯文本 `#137`，不生成 `[#137]()` 这种空链接。
+- **inbox 每条末尾**：从裸 URL 改成 `**原文（全文）：** <url>`，没记到地址就写「（没记到地址）」——不假装有。
+- **inbox 头部加两行**：说明正文只留前 400 字、换行压成一行、**不是全文**；并写「回帖前先点开看一眼整条再动笔」。
+- **存储目录配置化**：新增 `dataDir`（默认 `~/.dsh/ricebowl-watch`，可用 `RICE_WATCH_DATA_DIR` 覆盖）。原来 `DATA_DIR`/`STATE_FILE`/`INBOX_DIR`/`LOG_FILE` 是模块常量写死的，改成 `dataPaths(dataDir)` 在 `apply()` 里算。
+- **数据搬去 F 盘**：`C:\Users\HUAWEI\.dsh\ricebowl-watch` → `F:\agent expore\ricebowl-watch-data`（137 文件 740,864 B 原样拷），C 盘旧目录已删；profile 的 `cordis.patch.yml` 里写 `dataDir: F:/agent expore/ricebowl-watch-data`。
+- 测试：新增断言（有 url 的编号带链接、无 url 退回纯文本、inbox 末尾有「原文（全文）」、`dataDir` 进 DEFAULTS/ENV_KEYS/resolveConfig），全套通过。
+
 ## 0.3.1 — 2026-10-31（叫醒不再替我下结论）
 
 叫醒的头顶那句写死了：「今天不回帖（回帖留到生物钟那轮）」。主人问：「怎么还有生物钟，我们不是把时间统一了吗」——对了，纪律早改了，这句没改。

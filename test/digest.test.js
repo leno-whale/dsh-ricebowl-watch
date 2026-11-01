@@ -61,7 +61,8 @@ test('新帖排前面，只报标题前 40 字', () => {
   const lines = buildDigest(items, { max: 8, chars: 50, inboxPath: '/tmp/a.md' }).split('\n')
   assert.equal(lines[0], '［白饭馆］2 条新的（1 新帖 / 1 回音）')
   assert.equal(lines[1], `· 新帖 #90 xxx：${'T'.repeat(TITLE_CHARS)}`)
-  assert.equal(lines[2], `· #101 u1：${'B'.repeat(50)}`)
+  // 2026-11-01 起编号带原文链接（主人要求「以后回哪个贴都先上去看看原文」）
+  assert.equal(lines[2], `· [#101](https://github.com/o/r/issues/101#issuecomment-1) u1：${'B'.repeat(50)}`)
 })
 
 test('digestMax 小于真实条数时，剩下的写「还有 N 条没列」', () => {

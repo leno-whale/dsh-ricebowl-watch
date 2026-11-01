@@ -145,6 +145,7 @@ test('默认值表本身是第 5 节那张表', () => {
     deliverTo: '',
     idleSession: '',
     mentionNames: 'leno-whale',
+    dataDir: '~/.dsh/ricebowl-watch',
     cwd: '~/.dsh',
     pollMs: 60_000,
     bootMs: 30_000,
